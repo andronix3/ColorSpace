@@ -27,40 +27,10 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package com.smartg.color;
 
-import java.awt.Color;
-
-import com.imagero.reader.pdf.PdfObject.NameObject;
-import com.smartg.function.Function;
-
-public class Separation extends IColorSpace {
-
-    private static final long serialVersionUID = 384616434624598282L;
-    Function function;
-    IColorSpace alternateCS;
-    NameObject name;
-
-    public Separation(IColorSpace alternateCS, NameObject name, Function function) {
-	super(TYPE_2CLR, function.getNumInputs());
-	this.name = name;
-	this.alternateCS = alternateCS;
-	this.function = function;
-    }
-
-    public Color getColor(float[] d) {
-	float[] res = new float[function.getNumOutputs()];
-	function.compute(res, d);
-	return alternateCS.getColor(res);
-    }
-
-    public float[] toRGB(float[] colorvalue) {
-	float[] res = new float[function.getNumOutputs()];
-	function.compute(res, colorvalue);
-	return alternateCS.toRGB(res);
-    }
-
-    public int getComponentCount() {
-	return alternateCS.getComponentCount();
-    }
+public enum CompositeType {
+    NORMAL, MULTIPLY, SCREEN, OVERLAY, DARKEN, LIGHTEN, COLORDODGE, COLORBURN, HARDLIGHT, SOFTLIGHT, 
+    DIFFERENCE, EXCLUSION, HUE, SATURATION, COLOR, LUMINOSITY, SUB, ADD, DISTANCE
 }

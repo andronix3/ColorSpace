@@ -37,8 +37,6 @@ import java.awt.image.ColorModel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.imagero.reader.pdf.CompositeType;
-
 public class IComposite implements Composite {
 
     private float alpha;
