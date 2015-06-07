@@ -63,6 +63,10 @@ public class IComposite implements Composite {
 	return type;
     }
 
+    public Composer getComposer() {
+	return composer;
+    }
+
     public void setType(CompositeType type) {
 	this.type = type;
 	switch (type) {
