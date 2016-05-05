@@ -226,7 +226,7 @@ public class RGB_ColorSpace {
     private RGB_ColorSpace(int[] bps) {
 	this(bps, new ReferenceWhite(WhitePoint.D65));
     }
-    
+
     private RGB_ColorSpace(int[] bps, ReferenceWhite refWhite) {
 	this.type = "sRGB";
 	is_sRGB = true;
@@ -243,7 +243,7 @@ public class RGB_ColorSpace {
 	maxG = (1 << bitsPerSample[1]) - 1;
 	maxB = (1 << bitsPerSample[2]) - 1;
 
-//	refWhite = new ReferenceWhite(WhitePoint.D65);
+	// refWhite = new ReferenceWhite(WhitePoint.D65);
 	this.refWhite = refWhite;
 
 	Yr = GammaTables.createSRGB(bps[0]);
@@ -261,11 +261,10 @@ public class RGB_ColorSpace {
     public static RGB_ColorSpace createSRGB(int bps) {
 	return new RGB_ColorSpace(new int[] { bps, bps, bps });
     }
-    
+
     public static RGB_ColorSpace createSRGB(int bps, ReferenceWhite refWhite) {
 	return new RGB_ColorSpace(new int[] { bps, bps, bps }, refWhite);
     }
-
 
     public static RGB_ColorSpace create(RGB_ColorSpace rgbColor, int[] bps) {
 	return new RGB_ColorSpace(rgbColor, bps);
@@ -431,9 +430,10 @@ public class RGB_ColorSpace {
 		dest[2] = (float) (1.055f * Math.pow(Yb, igamma) - 0.055f);
 	    }
 	}
-	// dest[0] = this.Yr.inverse[Math.round(Yr * maxR)];
-	// dest[1] = this.Yg.inverse[Math.round(Yg * maxG)];
-	// dest[2] = this.Yb.inverse[Math.round(Yb * maxB)];
+
+	for (int i = 0; i < dest.length; i++) {
+	    dest[i] *= 255f;
+	}
     }
 
     // void xyz2rgb(float X, float Y, float Z, int[] dest) {
@@ -683,5 +683,16 @@ public class RGB_ColorSpace {
     public final void lchuv2rgb(float L, float C, float H, float[] dest) {
 	lchuv2luv(L, C, H, dest);
 	luv2rgb(dest[0], dest[1], dest[2], dest);
+    }
+
+    public static void main(String[] args) {
+	RGB_ColorSpace rgb = RGB_ColorSpace.createSRGB(8);
+
+	float[] dest = new float[3];
+	rgb.rgb2xyz(200, 200, 200, dest);
+
+	rgb.xyz2rgb(dest[0], dest[1], dest[2], dest);
+
+	System.out.println(dest[0] + " " + dest[1] + " " + dest[2]);
     }
 }
